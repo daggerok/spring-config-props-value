@@ -1,4 +1,4 @@
-# spring props
+# spring props [![CI](https://github.com/daggerok/spring-props/actions/workflows/ci.yaml/badge.svg)](https://github.com/daggerok/spring-props/actions/workflows/ci.yaml)
 This repository demonstrates spring config variates
 
 <!--
