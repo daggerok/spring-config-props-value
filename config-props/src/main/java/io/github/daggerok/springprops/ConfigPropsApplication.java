@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
-public class SpringPropsApplication {
+public class ConfigPropsApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringPropsApplication.class, args);
+        SpringApplication.run(ConfigPropsApplication.class, args);
     }
 }
 

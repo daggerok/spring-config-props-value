@@ -55,7 +55,63 @@ jobs:
       - run: sudo apt install -yqq httpie
       - run: command -v npx >/dev/null 2>&1 || { echo >&2 "NodeJS is required but not installed. Aborting."; exit 1; }
       - run: command -v http >/dev/null 2>&1 || { echo >&2 "HTTPie is required but not installed. Aborting."; exit 1; }
-      - run: ./mvnw clean ; ./mvnw -DskipTests ; java -jar $GITHUB_WORKSPACE/config-props/target/*.jar &
+      - run: ./mvnw clean ; ./mvnw -f config-props -DskipTests ; java -jar $GITHUB_WORKSPACE/config-props/target/*.jar &
       - run: npm_config_yes=true npx wait-port 8080
       - run: http -I get :8080/my-config-props
       - run: http -I get :8080/my-config-props/parent2/child1/a-string-value
+  value-configs-integration-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        id: ci
+        with:
+          path: |
+            ~/.npm
+            ~/.node
+            ~/.local
+            ~/.gradle
+            ~/.docker
+            ~/.m2/repository
+            !~/.m2/repository/*/gituhb/daggerok
+          key: ${{ hashFiles('**/*.gradle', '**/pom.xml') }}-
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: ${{ env.JAVA_VERSION }}
+      - uses: actions/setup-node@v3
+      - run: sudo apt install -yqq httpie
+      - run: command -v npx >/dev/null 2>&1 || { echo >&2 "NodeJS is required but not installed. Aborting."; exit 1; }
+      - run: command -v http >/dev/null 2>&1 || { echo >&2 "HTTPie is required but not installed. Aborting."; exit 1; }
+      - run: ./mvnw clean ; ./mvnw -f value-configs -DskipTests ; java -jar $GITHUB_WORKSPACE/value-configs/target/*.jar &
+      - run: npm_config_yes=true npx wait-port 8080
+      - run: http -I get :8080/my-value-configs
+      - run: http -I get :8080/my-value-configs/parent2/child1/a-string-value
+  yaml-value-configs-integration-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        id: ci
+        with:
+          path: |
+            ~/.npm
+            ~/.node
+            ~/.local
+            ~/.gradle
+            ~/.docker
+            ~/.m2/repository
+            !~/.m2/repository/*/gituhb/daggerok
+          key: ${{ hashFiles('**/*.gradle', '**/pom.xml') }}-
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: ${{ env.JAVA_VERSION }}
+      - uses: actions/setup-node@v3
+      - run: sudo apt install -yqq httpie
+      - run: command -v npx >/dev/null 2>&1 || { echo >&2 "NodeJS is required but not installed. Aborting."; exit 1; }
+      - run: command -v http >/dev/null 2>&1 || { echo >&2 "HTTPie is required but not installed. Aborting."; exit 1; }
+      - run: ./mvnw clean ; ./mvnw -f yaml-value-configs -DskipTests ; java -jar $GITHUB_WORKSPACE/yaml-value-configs/target/*.jar &
+      - run: npm_config_yes=true npx wait-port 8080
+      - run: http -I get :8080/my-yaml-value-configs
+      - run: http -I get :8080/my-yaml-value-configs/parent2/child1/a-string-value
